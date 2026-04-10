@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soko-д зориулав</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* User provided colors */
+            --color1: #9ED3DC; /* Light Blue */
+            --color2: #FEFD99; /* Light Yellow */
+            --color3: #FCB7C7; /* Light Pink */
+            --color4: #CA6180; /* Deep Rose */
+            
+            --glass-bg: rgba(255, 255, 255, 0.45);
+            --glass-border: rgba(255, 255, 255, 0.7);
+            --text-main: #3d2b3d;
+            --text-accent: var(--color4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #fdfafb;
+            overflow-x: hidden;
+            overflow-y: auto;
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        /* Ambient Background with specified colors */
+        .ambient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background: radial-gradient(circle at 0% 0%, var(--color1) 0%, transparent 50%),
+                        radial-gradient(circle at 100% 0%, var(--color2) 0%, transparent 50%),
+                        radial-gradient(circle at 100% 100%, var(--color3) 0%, transparent 50%),
+                        radial-gradient(circle at 0% 100%, var(--color4) 0%, transparent 50%);
+            filter: blur(80px);
+            opacity: 0.6;
+            animation: bgShift 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes bgShift {
+            0% { transform: scale(1) rotate(0deg); }
+            100% { transform: scale(1.2) rotate(5deg); }
+        }
+
+        /* Decorative Floating Elements */
+        .float-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            z-index: -1;
+            opacity: 0.5;
+            animation: float 25s infinite alternate ease-in-out;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(100px, -50px) scale(1.2); }
+            100% { transform: translate(-50px, 100px) scale(0.8); }
+        }
+
+        /* Main Container */
+        .container {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 640px;
+        }
+
+        /* Glassmorphism Card Refined */
+        .card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            padding: 4rem 3rem;
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.05),
+                inset 0 0 20px rgba(255, 255, 255, 0.4);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes softBreath {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+
+        .illustration-container {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            align-items: flex-end;
+            margin-bottom: 2rem;
+        }
+
+        .duo-img {
+            width: 140px;
+            height: 140px;
+            object-fit: cover;
+            object-position: top center;
+            border-radius: 30px;
+            border: 4px solid rgba(255,255,255,0.9);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.10);
+            animation: softBreath 4s ease-in-out infinite;
+        }
+
+        .duo-img:nth-child(2) {
+            animation-delay: -2s;
+        }
+
+        .duo-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--color4);
+            text-align: center;
+            margin-top: 6px;
+            letter-spacing: 0.05em;
+        }
+
+        .duo-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .icon-wrap {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2.5rem;
+            box-shadow: 0 10px 25px rgba(202, 97, 128, 0.15);
+            font-size: 2.5rem;
+            animation: pulse 3s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 10px 25px rgba(202, 97, 128, 0.15); }
+            50% { transform: scale(1.02); box-shadow: 0 15px 35px rgba(202, 97, 128, 0.25); }
+            100% { transform: scale(1); box-shadow: 0 10px 25px rgba(202, 97, 128, 0.15); }
+        }
+
+        /* Floating Cats */
+        .cat-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floating-cat {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background-image: url('file:///Users/dmtmobiledev/.gemini/antigravity/brain/ac4ade55-34f1-40ae-832a-3be63a6313c1/floating_kitten_asset_1775819808504.png');
+            background-size: cover;
+            mix-blend-mode: multiply; /* Removes white background */
+            opacity: 0.4;
+            animation: floatCat 20s infinite linear;
+        }
+
+        @keyframes floatCat {
+            0% { transform: translateY(110vh) rotate(0deg); }
+            100% { transform: translateY(-20vh) rotate(360deg); }
+        }
+
+        .message {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            line-height: 1.4;
+            color: var(--text-main);
+            margin-bottom: 2.5rem;
+            font-weight: 700;
+            position: relative;
+        }
+
+        .message span {
+            color: var(--color4);
+        }
+
+        .divider {
+            width: 40px;
+            height: 4px;
+            background: var(--color1);
+            margin: 0 auto 2.5rem;
+            border-radius: 2px;
+        }
+
+        .btn {
+            background: var(--color4);
+            color: white;
+            border: none;
+            padding: 1.2rem 3rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(202, 97, 128, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(202, 97, 128, 0.4);
+            background: #b54c68;
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* Media Queries for better visibility */
+        @media (max-width: 600px) {
+            .card {
+                padding: 2.5rem 1.5rem;
+                border-radius: 30px;
+            }
+            .message {
+                font-size: 1.4rem;
+                margin-bottom: 1.5rem;
+            }
+            .main-illustration {
+                max-width: 180px;
+            }
+            .btn {
+                padding: 1rem 2rem;
+                font-size: 1rem;
+            }
+        }
+
+        /* Heart Sparks for Button Click */
+        .spark {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1000;
+            font-size: 1.5rem;
+        }
+
+        /* Music Toggle Button */
+        .music-control {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 100;
+            width: 50px;
+            height: 50px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .music-control:hover {
+            transform: scale(1.1);
+            background: white;
+            box-shadow: 0 15px 30px rgba(158, 211, 220, 0.3);
+        }
+
+        .music-control.playing {
+            animation: spin 3s linear infinite;
+            background: var(--color1);
+            color: white;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        #youtube-player {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="cat-layer" id="catLayer"></div>
+
+    <div class="container">
+        <div class="card">
+            <div class="illustration-container">
+                <div class="duo-item">
+                    <img src="file:///Users/dmtmobiledev/.gemini/antigravity/brain/ac4ade55-34f1-40ae-832a-3be63a6313c1/user_cat_generated_1775821390130.png" alt="Sorry Cat" class="duo-img">
+                    <div class="duo-label">Би 🐱</div>
+                </div>
+                <div class="duo-item">
+                    <img src="file:///Users/dmtmobiledev/.gemini/antigravity/brain/ac4ade55-34f1-40ae-832a-3be63a6313c1/floating_kitten_asset_1775819808504.png" alt="Kitten" class="duo-img" style="object-position: center; background: white;">
+                    <div class="duo-label">Soko-г харж 🤍</div>
+                </div>
+            </div>
+            <p class="message">
+                “Хэцүү үед нь гомдоосонд <span>уучлаарай</span> Soko, тэрийг мэдэлгүй хэлсэнд <span>уучлаарай</span>”
+            </p>
+            <div class="divider"></div>
+            <button class="btn" id="mainBtn">Уучиллаа</button>
+        </div>
+    </div>
+
+    <div class="music-control" id="musicToggle" title="Дуу тоглуулах">
+        🎵
+    </div>
+
+    <div id="youtube-player"></div>
+
+    <script src="https://www.youtube.com/iframe_api"></script>
+
+    <script>
+        const btn = document.getElementById('mainBtn');
+        const musicToggle = document.getElementById('musicToggle');
+        const catLayer = document.getElementById('catLayer');
+        let player;
+        let isPlaying = false;
+
+        // Create floating cats
+        for (let i = 0; i < 12; i++) {
+            const cat = document.createElement('div');
+            cat.className = 'floating-cat';
+            cat.style.left = Math.random() * 100 + '%';
+            cat.style.animationDuration = (Math.random() * 15 + 15) + 's';
+            cat.style.animationDelay = (Math.random() * 20) + 's';
+            cat.style.width = (Math.random() * 60 + 40) + 'px';
+            cat.style.height = cat.style.width;
+            catLayer.appendChild(cat);
+        }
+
+        // YouTube API init
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('youtube-player', {
+                height: '0',
+                width: '0',
+                videoId: 'GYKIcyYXFZw', // Billie Eilish - i love you
+                playerVars: {
+                    'autoplay': 0,
+                    'controls': 0,
+                    'loop': 1,
+                    'playlist': 'GYKIcyYXFZw'
+                },
+                events: {
+                    'onReady': onPlayerReady
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            // Player is ready
+        }
+
+        function toggleMusic() {
+            if (!player) return;
+            
+            if (isPlaying) {
+                player.pauseVideo();
+                musicToggle.classList.remove('playing');
+                musicToggle.textContent = '🎵';
+            } else {
+                player.playVideo();
+                musicToggle.classList.add('playing');
+                musicToggle.textContent = '💿';
+            }
+            isPlaying = !isPlaying;
+        }
+
+        musicToggle.addEventListener('click', toggleMusic);
+
+        btn.addEventListener('click', (e) => {
+            btn.textContent = 'Баярлалаа 🤍';
+            btn.style.background = '#9ED3DC';
+            btn.style.boxShadow = '0 10px 30px rgba(158, 211, 220, 0.4)';
+            
+            // Start music on click if not playing (user interaction requirement)
+            if (!isPlaying) {
+                toggleMusic();
+            }
+
+            // Trigger explosion
+            const rect = btn.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            
+            for(let i=0; i<20; i++) {
+                createSpark(centerX, centerY);
+            }
+        });
+
+        function createSpark(x, y) {
+            const spark = document.createElement('div');
+            spark.className = 'spark';
+            const items = ['🌸', '✨', '💖', '🤍'];
+            spark.textContent = items[Math.floor(Math.random() * items.length)];
+            document.body.appendChild(spark);
+            
+            const destX = x + (Math.random() - 0.5) * 400;
+            const destY = y + (Math.random() - 0.5) * 400;
+            
+            spark.animate([
+                { 
+                    transform: 'translate(-50%, -50%) translate(0,0) scale(0)',
+                    opacity: 1,
+                    left: x + 'px',
+                    top: y + 'px'
+                },
+                { 
+                    transform: `translate(-50%, -50%) translate(${destX - x}px, ${destY - y}px) scale(1.5)`,
+                    opacity: 0,
+                    left: x + 'px',
+                    top: y + 'px'
+                }
+            ], {
+                duration: 1000 + Math.random() * 800,
+                easing: 'cubic-bezier(0.1, 0.8, 0.4, 1)'
+            }).onfinish = () => spark.remove();
+        }
+    </script>
+</body>
+</html>
