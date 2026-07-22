@@ -5,6 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Сүнсний Хань Тодорхойлогч ✨</title>
+    
+    <!-- Open Graph / Facebook Link Preview Metadata -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Сүнсний Хань Тодорхойлогч ✨">
+    <meta property="og:description" content="Төрсөн он сар, нас, хүйсийн мэдээллээ оруулж одон орны болон энергийн зохицлоор сүнсний ханиа тодорхойлно уу.">
+    <meta property="og:image" content="images/preview.png">
+
+    <!-- Twitter Link Preview Metadata -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="Сүнсний Хань Тодорхойлогч ✨">
+    <meta property="twitter:description" content="Төрсөн он сар, нас, хүйсийн мэдээллээ оруулж одон орны болон энергийн зохицлоор сүнсний ханиа тодорхойлно уу.">
+    <meta property="twitter:image" content="images/preview.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -350,8 +362,8 @@
 
     <div class="container">
         <div class="card" id="prankCard">
-            <!-- Full-Screen Prank Image (Covers entire card) -->
-            <img src="images/monkeymidlefinger.png" alt="Monkey Prank" class="result-image" id="prankImage">
+            <!-- Full-Screen Prank Image (Loaded dynamically to avoid spoiler in link previews) -->
+            <img src="" alt="Soul mate" class="result-image" id="prankImage">
 
             <div class="card-content" id="cardContent">
                 <!-- Screen Header -->
@@ -580,6 +592,9 @@
         function revealPrank() {
             appState = 'revealed';
 
+            // Set the prank image source dynamically to avoid spoiling the prank in link previews
+            prankImage.src = 'images/monkeymidlefinger.png';
+
             // Change page state to revealed
             card.classList.add('revealed');
 
@@ -593,6 +608,9 @@
 
         function resetApp() {
             appState = 'welcome';
+
+            // Clear the prank image source to keep it hidden
+            prankImage.removeAttribute('src');
 
             // Reset fields
             birthDateInput.value = '';
