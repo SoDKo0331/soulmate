@@ -1,22 +1,28 @@
 <!DOCTYPE html>
 <html lang="mn">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Face Beauty Evaluator 🧠✨</title>
+    <title>Сүнсний Хань Тодорхойлогч ✨</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&display=swap"
+        rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0b0813;
-            --card-bg: rgba(18, 14, 33, 0.7);
-            --border-glow: rgba(0, 242, 254, 0.25);
-            --neon-cyan: #00f2fe;
-            --neon-pink: #ff007f;
-            --neon-green: #39ff14;
-            --text-main: #f3f0ff;
-            --text-muted: #8b85a6;
+            --bg-color: #FAF6F0;
+            /* Warm organic cream */
+            --card-bg: #FFFFFF;
+            --accent-color: #C49A6C;
+            /* Antique soft gold */
+            --accent-hover: #B28859;
+            --text-main: #2E2C2A;
+            /* Deep charcoal */
+            --text-muted: #7A7571;
+            /* Soft warm grey */
+            --card-shadow: 0 15px 45px rgba(46, 44, 42, 0.05);
         }
 
         * {
@@ -26,7 +32,7 @@
         }
 
         body {
-            font-family: 'Outfit', sans-serif;
+            font-family: 'Nunito', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
             min-height: 100vh;
@@ -35,371 +41,281 @@
             justify-content: center;
             overflow-x: hidden;
             position: relative;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(255, 0, 127, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(0, 242, 254, 0.08) 0%, transparent 40%);
         }
 
-        /* Ambient floating light blobs */
-        .ambient-blob {
+        /* Subtle glowing warm backgrounds */
+        .ambient-glow {
             position: absolute;
-            width: 300px;
-            height: 300px;
+            width: 400px;
+            height: 400px;
             border-radius: 50%;
-            filter: blur(120px);
+            background: radial-gradient(circle, rgba(196, 154, 108, 0.06) 0%, transparent 70%);
             z-index: 0;
             pointer-events: none;
-            opacity: 0.6;
-            animation: drift 20s infinite alternate ease-in-out;
         }
 
-        .blob-pink {
-            background: var(--neon-pink);
-            top: 20%;
-            left: 15%;
-            animation-delay: -5s;
+        .glow-1 {
+            top: 15%;
+            left: 10%;
         }
 
-        .blob-cyan {
-            background: var(--neon-cyan);
-            bottom: 20%;
-            right: 15%;
-        }
-
-        @keyframes drift {
-            0% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(60px, -40px) scale(1.2); }
-            100% { transform: translate(-40px, 60px) scale(0.9); }
-        }
-
-        /* Scanline Overlay Effect */
-        body::before {
-            content: " ";
-            display: block;
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 999;
-            background-size: 100% 4px, 6px 100%;
-            pointer-events: none;
+        .glow-2 {
+            bottom: 15%;
+            right: 10%;
         }
 
         /* Main Container */
         .container {
             width: 90%;
-            max-width: 480px;
+            max-width: 420px;
             z-index: 10;
-            perspective: 1000px;
         }
 
-        /* Glassmorphism Card */
+        /* Minimalist Card */
         .card {
             background: var(--card-bg);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid var(--border-glow);
             border-radius: 28px;
-            padding: 2.5rem 2rem;
-            box-shadow: 
-                0 20px 50px rgba(0, 0, 0, 0.5),
-                inset 0 0 20px rgba(0, 242, 254, 0.05);
+            padding: 3rem 2.2rem;
+            box-shadow: var(--card-shadow);
             text-align: center;
-            transition: all 0.5s ease;
+            transition: all 0.4s ease;
             position: relative;
             overflow: hidden;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border: 1px solid rgba(196, 154, 108, 0.1);
         }
 
-        .card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -50%;
-            width: 200%;
-            height: 100%;
-            background: linear-gradient(
-                to right,
-                rgba(255, 255, 255, 0) 0%,
-                rgba(255, 255, 255, 0.03) 50%,
-                rgba(255, 255, 255, 0) 100%
-            );
-            transform: skewX(-25deg);
-            transition: 0.75s;
-            pointer-events: none;
+        .card-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
-        .card:hover::after {
-            left: 125%;
-        }
-
-        /* Titles and Texts */
+        /* Typography styling */
         .header {
             margin-bottom: 2rem;
+            transition: opacity 0.3s ease;
         }
 
         .header h1 {
-            font-size: 1.8rem;
+            font-family: 'Nunito', sans-serif;
+            font-size: 2rem;
             font-weight: 800;
-            background: linear-gradient(45deg, var(--neon-cyan), var(--neon-pink));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 0.5rem;
-            letter-spacing: 0.5px;
+            color: var(--text-main);
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.2px;
         }
 
         .header p {
             color: var(--text-muted);
             font-size: 0.95rem;
-            line-height: 1.4;
+            line-height: 1.5;
         }
 
-        /* Scanner Display Area */
-        .scanner-frame {
-            position: relative;
-            width: 200px;
-            height: 200px;
-            margin: 0 auto 2rem;
-            border-radius: 24px;
-            background: rgba(0, 0, 0, 0.3);
-            border: 2px solid rgba(0, 242, 254, 0.2);
+        /* Minimalist Input Form */
+        .form-container {
             display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.4rem;
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border-radius: 12px;
+            border: 1px solid rgba(196, 154, 108, 0.25);
+            background: #FFFFFF;
+            color: var(--text-main);
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(196, 154, 108, 0.1);
+        }
+
+        /* Spinner for Simulation */
+        .loader-container {
+            display: none;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
-            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.6);
+            margin: 2rem 0;
         }
 
-        /* Scanning elements */
-        .scanner-frame::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(to right, transparent, var(--neon-cyan), transparent);
-            box-shadow: 0 0 12px var(--neon-cyan);
-            animation: scan 3s infinite ease-in-out;
-            z-index: 5;
-            display: none; /* Only when scanning */
-        }
-
-        .scanning .scanner-frame::before {
-            display: block;
-        }
-
-        @keyframes scan {
-            0%, 100% { top: 0%; }
-            50% { top: 98%; }
-        }
-
-        /* Camera/Face Silhouette */
-        .silhouette {
-            width: 120px;
-            height: 120px;
-            opacity: 0.25;
-            transition: all 0.5s ease;
-            color: var(--neon-cyan);
-            filter: drop-shadow(0 0 8px rgba(0, 242, 254, 0.3));
-        }
-
-        .scanning .silhouette {
-            animation: pulse-silhouette 1.5s infinite alternate ease-in-out;
-            opacity: 0.65;
-            color: var(--neon-pink);
-            filter: drop-shadow(0 0 12px rgba(255, 0, 127, 0.5));
-        }
-
-        @keyframes pulse-silhouette {
-            from { transform: scale(0.95); opacity: 0.4; }
-            to { transform: scale(1.05); opacity: 0.8; }
-        }
-
-        /* Radar Circle Animation */
-        .radar-circle {
-            position: absolute;
-            width: 170px;
-            height: 170px;
-            border: 2px dashed rgba(0, 242, 254, 0.15);
+        .loader-circle {
+            width: 60px;
+            height: 60px;
+            border: 2px solid rgba(196, 154, 108, 0.1);
+            border-top-color: var(--accent-color);
             border-radius: 50%;
-            animation: rotateRadar 20s infinite linear;
-            display: none;
+            animation: spin 1s infinite linear;
+            margin-bottom: 1.5rem;
         }
 
-        .scanning .radar-circle {
-            display: block;
-            border-color: rgba(255, 0, 127, 0.25);
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
         }
 
-        @keyframes rotateRadar {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        /* Result Image Styles */
-        .result-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 20px;
-            display: none;
-            opacity: 0;
-            transform: scale(0.8);
-            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 4;
-        }
-
-        .revealed .result-image {
-            display: block;
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        .revealed .silhouette, .revealed .radar-circle {
-            display: none !important;
-        }
-
-        .revealed .scanner-frame {
-            border-color: var(--neon-pink);
-            box-shadow: 0 0 25px rgba(255, 0, 127, 0.4);
-            animation: popBorder 0.4s ease-out;
-        }
-
-        @keyframes popBorder {
-            0% { transform: scale(1); border-color: var(--neon-cyan); }
-            50% { transform: scale(1.08); border-color: #fff; }
-            100% { transform: scale(1); border-color: var(--neon-pink); }
-        }
-
-        /* Console/Logs Area */
-        .console-box {
-            font-family: 'Share Tech Mono', monospace;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 1rem;
-            text-align: left;
-            font-size: 0.8rem;
-            height: 100px;
-            overflow-y: hidden;
-            margin-bottom: 2rem;
-            display: none;
-            color: var(--neon-green);
-            text-shadow: 0 0 4px rgba(57, 255, 20, 0.2);
-        }
-
-        .console-line {
-            margin-bottom: 0.4rem;
-            opacity: 0;
-            transform: translateY(5px);
-            animation: fadeInUp 0.3s forwards ease;
-        }
-
-        @keyframes fadeInUp {
-            to { opacity: 1; transform: translateY(0); }
+        /* Status text during loading */
+        .status-text {
+            font-size: 0.9rem;
+            font-style: italic;
+            color: var(--text-muted);
+            min-height: 1.5rem;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
         }
 
         /* Progress Bar */
         .progress-container {
-            width: 100%;
-            height: 8px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 4px;
-            margin-bottom: 2rem;
+            width: 100px;
+            height: 2px;
+            background: rgba(196, 154, 108, 0.15);
+            border-radius: 1px;
             overflow: hidden;
-            display: none;
-            position: relative;
         }
 
         .progress-bar {
             height: 100%;
             width: 0%;
-            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink));
-            box-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
-            border-radius: 4px;
+            background: var(--accent-color);
             transition: width 0.1s linear;
         }
 
-        /* Interactive Buttons */
-        .btn {
-            background: transparent;
-            color: #fff;
-            border: 2px solid var(--neon-cyan);
-            padding: 1rem 2.2rem;
-            font-size: 1.05rem;
-            font-weight: 600;
-            border-radius: 16px;
-            cursor: pointer;
-            outline: none;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            width: 100%;
-            position: relative;
-            overflow: hidden;
-            letter-spacing: 0.5px;
-            box-shadow: 0 0 15px rgba(0, 242, 254, 0.15);
-        }
-
-        .btn::before {
-            content: '';
+        .result-image {
             position: absolute;
             top: 0;
-            left: -100%;
+            left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
-            transition: 0.5s;
+            object-fit: cover;
+            border-radius: 28px;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 1.5s ease, visibility 1.5s ease;
+            z-index: 10;
         }
 
-        .btn:hover::before {
-            left: 100%;
+        .revealed .result-image {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        /* Action Buttons */
+        .btn-wrapper {
+            width: 100%;
+            z-index: 20;
+            margin-top: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn {
+            background: var(--accent-color);
+            color: #fff;
+            border: none;
+            padding: 0.9rem 2.2rem;
+            font-size: 0.98rem;
+            font-weight: 500;
+            border-radius: 14px;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+            width: 100%;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(196, 154, 108, 0.18);
         }
 
         .btn:hover {
-            background: var(--neon-cyan);
-            color: #0b0813;
-            box-shadow: 0 0 25px rgba(0, 242, 254, 0.45);
-            transform: translateY(-3px);
+            background: var(--accent-hover);
+            box-shadow: 0 6px 18px rgba(196, 154, 108, 0.28);
+            transform: translateY(-2px);
         }
 
         .btn:active {
             transform: translateY(0);
         }
 
-        .btn-pink {
-            border-color: var(--neon-pink);
-            box-shadow: 0 0 15px rgba(255, 0, 127, 0.15);
+        /* Floating Try Again button style when prank is revealed */
+        .revealed .btn-wrapper {
+            position: absolute;
+            bottom: 2rem;
+            left: 2rem;
+            width: calc(100% - 4rem);
         }
 
-        .btn-pink:hover {
-            background: var(--neon-pink);
-            color: #fff;
-            box-shadow: 0 0 25px rgba(255, 0, 127, 0.45);
+        .revealed .btn {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(196, 154, 108, 0.4);
+            box-shadow: 0 10px 25px rgba(46, 44, 42, 0.12);
+            color: var(--text-main);
+        }
+
+        .revealed .btn:hover {
+            background: #FFFFFF;
+            color: var(--accent-hover);
         }
 
         /* Screen Shake Animation */
         .shake-card {
-            animation: shake 0.6s cubic-bezier(.36,.07,.19,.97) both;
+            animation: shake 0.6s cubic-bezier(.36, .07, .19, .97) both;
         }
 
         @keyframes shake {
-            10%, 90% { transform: translate3d(-2px, 0, 0); }
-            20%, 80% { transform: translate3d(4px, 0, 0); }
-            30%, 50%, 70% { transform: translate3d(-8px, 0, 0); }
-            40%, 60% { transform: translate3d(8px, 0, 0); }
+
+            10%,
+            90% {
+                transform: translate3d(-2px, 0, 0);
+            }
+
+            20%,
+            80% {
+                transform: translate3d(4px, 0, 0);
+            }
+
+            30%,
+            50%,
+            70% {
+                transform: translate3d(-8px, 0, 0);
+            }
+
+            40%,
+            60% {
+                transform: translate3d(8px, 0, 0);
+            }
         }
 
-        /* Face scanning mesh vector style */
-        .face-mesh {
-            width: 80px;
-            height: 80px;
-            stroke-width: 1.5;
-            stroke: currentColor;
-            fill: none;
-        }
-
-        /* Spark particles */
+        /* Particle element */
         .particle {
             position: fixed;
             pointer-events: none;
@@ -409,315 +325,334 @@
 
         /* Privacy Disclaimer */
         .disclaimer {
-            margin-top: 1.5rem;
+            margin-top: 1.2rem;
             font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.2);
+            color: var(--text-muted);
+            opacity: 0.6;
             letter-spacing: 0.2px;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Form alert helper */
+        .error-message {
+            color: #d9534f;
+            font-size: 0.8rem;
+            margin-top: 0.3rem;
+            display: none;
+            text-align: left;
         }
     </style>
 </head>
-<body>
-    <div class="ambient-blob blob-pink"></div>
-    <div class="ambient-blob blob-cyan"></div>
+
+<body class="welcome">
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
 
     <div class="container">
         <div class="card" id="prankCard">
-            <!-- Screen Header -->
-            <div class="header">
-                <h1 id="appTitle">Царай Шинжлэгч AI 🧠</h1>
-                <p id="appDescription">AI технологид тулгуурлан таны царайны харьцаа болон гоо үзэсгэлэнг 99.8% нарийвчлалтайгаар тодорхойлно.</p>
+            <!-- Full-Screen Prank Image (Covers entire card) -->
+            <img src="images/monkeymidlefinger.png" alt="Monkey Prank" class="result-image" id="prankImage">
+
+            <div class="card-content" id="cardContent">
+                <!-- Screen Header -->
+                <div class="header" id="cardHeader">
+                    <h1>Soul mate Тодорхойлогч ✨</h1>
+                    <p>Төрсөн он сар, нас, хүйсийн мэдээллээ оруулж одон орны болон энергийн зохицлоор сүнсний ханиа
+                        тодорхойлно уу.</p>
+                </div>
+
+                <!-- Demographic Input Form -->
+                <div class="form-container" id="formContainer">
+                    <div class="form-group">
+                        <label for="birthDate">Төрсөн он, сар, өдөр</label>
+                        <input type="date" class="form-input" id="birthDate" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="age">Нас</label>
+                        <input type="number" min="1" max="120" class="form-input" id="age" required
+                            placeholder="Жишээ нь: 22">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gender">Хүйс</label>
+                        <select class="form-input" id="gender" required>
+                            <option value="" disabled selected>Хүйсээ сонгоно уу</option>
+                            <option value="male">Эрэгтэй</option>
+                            <option value="female">Эмэгтэй</option>
+                        </select>
+                    </div>
+                    <div class="error-message" id="formError">⚠️ Бүх талбарыг зөв бөглөнө үү.</div>
+                </div>
+
+                <!-- Simulation Loading State -->
+                <div class="loader-container" id="loaderContainer">
+                    <div class="loader-circle"></div>
+                    <div class="status-text" id="statusText"></div>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progressBar"></div>
+                    </div>
+                </div>
             </div>
 
-            <!-- Interactive Area / Scanner Frame -->
-            <div class="scanner-frame" id="scannerFrame">
-                <div class="radar-circle"></div>
-                <!-- SVG Face Silhouette for Tech feel -->
-                <svg class="silhouette" id="scannerSilhouette" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path class="face-mesh" d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 22 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 10.42 4.45 8.95 5.23 7.7L16.3 18.77C15.05 19.55 13.58 20 12 20ZM18.77 16.3L7.7 5.23C8.95 4.45 10.42 4 12 4C16.41 4 20 7.59 20 12C20 13.58 19.55 15.05 18.77 16.3Z" fill="currentColor"/>
-                    <path d="M12 6C9.79 6 8 7.79 8 10C8 12.21 9.79 14 12 14C14.21 14 16 12.21 16 10C16 7.79 14.21 6 12 6Z" fill="currentColor"/>
-                    <path d="M12 16C9.33 16 4 17.33 4 20V21H20V20C20 17.33 14.67 16 12 16Z" fill="currentColor"/>
-                </svg>
-                <!-- Prank Image -->
-                <img src="images/monkeymidlefinger.png" alt="Monkey Prank" class="result-image" id="prankImage">
+            <!-- Button Wrapper -->
+            <div class="btn-wrapper">
+                <button class="btn" id="actionBtn">Тодорхойлох 🔮</button>
             </div>
-
-            <!-- Console Log Output (hidden until scan starts) -->
-            <div class="console-box" id="consoleBox"></div>
-
-            <!-- Progress Bar (hidden until scan starts) -->
-            <div class="progress-container" id="progressContainer">
-                <div class="progress-bar" id="progressBar"></div>
-            </div>
-
-            <!-- Main Button Action -->
-            <button class="btn" id="actionBtn">Шинжилгээг эхлүүлэх 📸</button>
 
             <!-- Small Privacy Notice -->
-            <p class="disclaimer" id="disclaimerText">Бид таны камерны зураг болон хувийн мэдээллийг серверт хадгалахгүй.</p>
+            <p class="disclaimer" id="disclaimerText">Бид таны мэдээллийг хадгалахгүй бөгөөд зөвхөн төхөөрөмж дээр
+                боловсруулна.</p>
         </div>
     </div>
 
     <script>
         const card = document.getElementById('prankCard');
-        const appTitle = document.getElementById('appTitle');
-        const appDescription = document.getElementById('appDescription');
+        const cardContent = document.getElementById('cardContent');
+        const cardHeader = document.getElementById('cardHeader');
+        const formContainer = document.getElementById('formContainer');
+        const loaderContainer = document.getElementById('loaderContainer');
         const actionBtn = document.getElementById('actionBtn');
-        const scannerFrame = document.getElementById('scannerFrame');
-        const consoleBox = document.getElementById('consoleBox');
-        const progressContainer = document.getElementById('progressContainer');
+        const statusText = document.getElementById('statusText');
         const progressBar = document.getElementById('progressBar');
         const disclaimerText = document.getElementById('disclaimerText');
         const prankImage = document.getElementById('prankImage');
+        const formError = document.getElementById('formError');
 
-        let appState = 'welcome'; // welcome, scanning, completed, revealed
+        // Inputs
+        const birthDateInput = document.getElementById('birthDate');
+        const ageInput = document.getElementById('age');
+        const genderInput = document.getElementById('gender');
+
+        let appState = 'welcome'; // welcome, calculating, completed, revealed
         let audioCtx = null;
 
-        // Custom Sound Generator using Web Audio API (No files needed)
+        // Custom Sound Generator using Web Audio API
         function initAudio() {
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             }
         }
 
-        function playSciFiBeep(pitch, duration, type='sine') {
+        function playSoftNote(pitch, duration, type = 'sine', volume = 0.08) {
             if (!audioCtx) return;
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.connect(gain);
             gain.connect(audioCtx.destination);
-            
+
             osc.type = type;
             osc.frequency.setValueAtTime(pitch, audioCtx.currentTime);
-            
-            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
-            
+
+            gain.gain.setValueAtTime(volume, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+
             osc.start();
             osc.stop(audioCtx.currentTime + duration);
         }
 
-        function playRevealSound() {
+        // Ascending magic arpeggio + funny bass drop at the end
+        function playPrankSound() {
             if (!audioCtx) return;
-            
-            // Dramatic fail/prank retro synth sound effect
             const now = audioCtx.currentTime;
-            
-            // Sound Part 1: Ascending tech noise
-            const osc1 = audioCtx.createOscillator();
-            const gain1 = audioCtx.createGain();
-            osc1.connect(gain1);
-            gain1.connect(audioCtx.destination);
-            osc1.type = 'sawtooth';
-            osc1.frequency.setValueAtTime(150, now);
-            osc1.frequency.exponentialRampToValueAtTime(1200, now + 0.5);
-            gain1.gain.setValueAtTime(0.2, now);
-            gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
-            osc1.start(now);
-            osc1.stop(now + 0.5);
 
-            // Sound Part 2: Comical drop / alarm
-            const osc2 = audioCtx.createOscillator();
-            const gain2 = audioCtx.createGain();
-            osc2.connect(gain2);
-            gain2.connect(audioCtx.destination);
-            osc2.type = 'square';
-            osc2.frequency.setValueAtTime(800, now + 0.45);
-            osc2.frequency.linearRampToValueAtTime(80, now + 1.2);
-            gain2.gain.setValueAtTime(0.25, now + 0.45);
-            gain2.gain.exponentialRampToValueAtTime(0.001, now + 1.25);
-            osc2.start(now + 0.45);
-            osc2.stop(now + 1.3);
+            // 1. Ascending magical bell chime
+            const notes = [1046.50, 1318.51, 1567.98, 2093.00, 2637.02]; // C6, E6, G6, C7, E7
+            notes.forEach((freq, index) => {
+                const time = now + index * 0.08;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, time);
 
-            // Sound Part 3: Low bass impact
-            const osc3 = audioCtx.createOscillator();
-            const gain3 = audioCtx.createGain();
-            osc3.connect(gain3);
-            gain3.connect(audioCtx.destination);
-            osc3.type = 'triangle';
-            osc3.frequency.setValueAtTime(120, now + 0.48);
-            osc3.frequency.linearRampToValueAtTime(50, now + 1.0);
-            gain3.gain.setValueAtTime(0.4, now + 0.48);
-            gain3.gain.exponentialRampToValueAtTime(0.001, now + 1.1);
-            osc3.start(now + 0.48);
-            osc3.stop(now + 1.1);
-        }
+                gain.gain.setValueAtTime(0, time);
+                gain.gain.linearRampToValueAtTime(0.12, time + 0.02);
+                gain.gain.exponentialRampToValueAtTime(0.001, time + 0.35);
 
-        // Fake console log messages during scanning
-        const scanLogs = [
-            { time: 0, text: "❯ Төхөөрөмжийн биометр холболтыг шалгаж байна..." },
-            { time: 800, text: "❯ Камерын линзийг автоматаар тохирууллаа." },
-            { time: 1600, text: "❯ Хүрээлэн буй орчны гэрэлтүүлгийг оновчтой болгов." },
-            { time: 2400, text: "❯ Нүүрний 68 биометрик цэгүүдийг илрүүлж байна..." },
-            { time: 3200, text: "❯ Шинжилж байна: Арьсны бүтэц, хөгшрөлтийн индекс." },
-            { time: 4000, text: "❯ Тооцоолж байна: Симметри болон харьцааны дүн." },
-            { time: 4800, text: "❯ Гоо сайхны үнэлгээний алгоритм ажиллаж байна..." },
-            { time: 5400, text: "❯ АМЖИЛТТАЙ: Дүн шинжилгээ нэгтгэгдэж дууслаа." }
-        ];
-
-        function addLogLine(text) {
-            const line = document.createElement('div');
-            line.className = 'console-line';
-            line.innerText = text;
-            consoleBox.appendChild(line);
-            consoleBox.scrollTop = consoleBox.scrollHeight;
-            playSciFiBeep(600, 0.05, 'sine');
-        }
-
-        function startScanning() {
-            initAudio();
-            appState = 'scanning';
-            
-            // Switch layout state to scanning
-            card.classList.add('scanning');
-            consoleBox.style.display = 'block';
-            progressContainer.style.display = 'block';
-            disclaimerText.style.display = 'none';
-            
-            actionBtn.disabled = true;
-            actionBtn.innerText = "Шинжилж байна...";
-            actionBtn.style.opacity = '0.7';
-            actionBtn.style.cursor = 'not-allowed';
-
-            consoleBox.innerHTML = '';
-            
-            // Trigger fake logs
-            scanLogs.forEach(log => {
-                setTimeout(() => {
-                    if (appState === 'scanning') {
-                        addLogLine(log.text);
-                    }
-                }, log.time);
+                osc.start(time);
+                osc.stop(time + 0.4);
             });
 
-            // Animate progress bar
+            // 2. High-speed comic drop / trombone sound immediately following the chime
+            const dropTime = now + 0.42;
+            const oscDrop = audioCtx.createOscillator();
+            const gainDrop = audioCtx.createGain();
+            oscDrop.connect(gainDrop);
+            gainDrop.connect(audioCtx.destination);
+
+            oscDrop.type = 'triangle';
+            oscDrop.frequency.setValueAtTime(750, dropTime);
+            oscDrop.frequency.linearRampToValueAtTime(70, dropTime + 0.8);
+
+            gainDrop.gain.setValueAtTime(0.25, dropTime);
+            gainDrop.gain.exponentialRampToValueAtTime(0.001, dropTime + 0.8);
+
+            oscDrop.start(dropTime);
+            oscDrop.stop(dropTime + 0.85);
+
+            // 3. Low sub-bass hit for vibration impact
+            const oscBass = audioCtx.createOscillator();
+            const gainBass = audioCtx.createGain();
+            oscBass.connect(gainBass);
+            gainBass.connect(audioCtx.destination);
+
+            oscBass.type = 'sine';
+            oscBass.frequency.setValueAtTime(100, dropTime + 0.05);
+            oscBass.frequency.linearRampToValueAtTime(45, dropTime + 0.6);
+
+            gainBass.gain.setValueAtTime(0.4, dropTime + 0.05);
+            gainBass.gain.exponentialRampToValueAtTime(0.001, dropTime + 0.65);
+
+            oscBass.start(dropTime + 0.05);
+            oscBass.stop(dropTime + 0.7);
+        }
+
+        // Calculation phrases
+        const calcPhrases = [
+            { time: 0, text: "Одон орны байрлалыг тооцоолж байна..." },
+            { time: 1200, text: "Төрсөн өдрийн энергийн долгионыг шинжилж байна..." },
+            { time: 2400, text: "Сүнсний давтамжийн ухамсрыг уншиж байна..." },
+            { time: 3600, text: "Тохирох аура хайлтыг дуусгаж байна..." },
+            { time: 4500, text: "Тооцоолол амжилттай дууслаа." }
+        ];
+
+        function validateForm() {
+            if (!birthDateInput.value || !ageInput.value || ageInput.value <= 0 || !genderInput.value) {
+                formError.style.display = 'block';
+                return false;
+            }
+            formError.style.display = 'none';
+            return true;
+        }
+
+        function startCalculations() {
+            if (!validateForm()) return;
+
+            initAudio();
+            appState = 'calculating';
+
+            formContainer.style.display = 'none';
+            loaderContainer.style.display = 'flex';
+            disclaimerText.style.opacity = '0';
+
+            actionBtn.disabled = true;
+            actionBtn.innerText = "Тооцоолж байна...";
+            actionBtn.style.opacity = '0.6';
+            actionBtn.style.cursor = 'not-allowed';
+
+            // Loop through statuses
+            calcPhrases.forEach(phrase => {
+                setTimeout(() => {
+                    if (appState === 'calculating') {
+                        statusText.innerText = phrase.text;
+                        playSoftNote(523.25, 0.08); // Soft piano key on status change
+                    }
+                }, phrase.time);
+            });
+
+            // Animate minimalist progress bar
             let progress = 0;
             const progressInterval = setInterval(() => {
                 if (progress >= 100) {
                     clearInterval(progressInterval);
-                    completeScanning();
+                    completeCalculations();
                 } else {
                     progress += 1;
                     progressBar.style.width = progress + '%';
-                    if (progress % 12 === 0) {
-                        playSciFiBeep(450, 0.03, 'triangle');
-                    }
                 }
-            }, 60); // Total around 6 seconds
+            }, 50); // Around 5 seconds
         }
 
-        function completeScanning() {
+        function completeCalculations() {
             appState = 'completed';
             actionBtn.disabled = false;
-            actionBtn.innerText = "Үр дүнг харах 📊";
+            actionBtn.innerText = "Үр дүнг харах 🤍";
             actionBtn.style.opacity = '1';
             actionBtn.style.cursor = 'pointer';
-            actionBtn.classList.add('btn-pink');
-            
-            // Visual alert
-            playSciFiBeep(880, 0.25, 'sine');
-            setTimeout(() => playSciFiBeep(1100, 0.3, 'sine'), 120);
+
+            // Soft chime notification
+            playSoftNote(880, 0.15); // A5
+            setTimeout(() => playSoftNote(1046.50, 0.2), 80); // C6
         }
 
         function revealPrank() {
             appState = 'revealed';
-            
-            // Sound effect
-            playRevealSound();
-
-            // Add shake class
-            card.classList.add('shake-card');
-            setTimeout(() => {
-                card.classList.remove('shake-card');
-            }, 600);
 
             // Change page state to revealed
-            card.classList.remove('scanning');
             card.classList.add('revealed');
-            
-            // Hide scanner tools
-            consoleBox.style.display = 'none';
-            progressContainer.style.display = 'none';
 
-            // Change titles and texts
-            appTitle.innerText = "ҮР ДҮН: 100% ШИМПАНЗЕ! 🐒🖕";
-            appTitle.style.background = 'linear-gradient(45deg, #ff007f, #ffaa00)';
-            appTitle.style.webkitBackgroundClip = 'text';
-            
-            appDescription.innerText = "Манай AI технологи таныг дэлхийн хамгийн ховор тохиох ойн сармагчинтай 99.9% ижил царайны бүтэцтэй болохыг тогтоолоо. Баяр хүргэе!";
-            appDescription.style.color = '#ff4b8b';
+            // Hide all layout contents
+            cardContent.style.display = 'none';
+            disclaimerText.style.display = 'none';
 
-            // Change button to Reset
-            actionBtn.innerText = "Дахин уншуулах 🔄";
-            actionBtn.classList.remove('btn-pink');
-            actionBtn.style.borderColor = 'var(--neon-cyan)';
-            actionBtn.style.boxShadow = '0 0 15px rgba(0, 242, 254, 0.15)';
-            
-            // Spark particle burst
-            const rect = actionBtn.getBoundingClientRect();
-            const centerX = window.innerWidth / 2;
-            const centerY = rect.top + rect.height / 2;
-            for (let i = 0; i < 30; i++) {
-                createSparkParticle(centerX, centerY);
-            }
+            // Change action button text to Reset
+            actionBtn.innerText = "Дахин оролдох 🔄";
         }
 
         function resetApp() {
             appState = 'welcome';
-            
-            // Reset visual states
+
+            // Reset fields
+            birthDateInput.value = '';
+            ageInput.value = '';
+            genderInput.value = '';
+
+            // Reset layout states
             card.classList.remove('revealed');
-            card.classList.remove('scanning');
-            
-            appTitle.innerText = "Царай Шинжлэгч AI 🧠";
-            appTitle.style.background = 'linear-gradient(45deg, var(--neon-cyan), var(--neon-pink))';
-            appTitle.style.webkitBackgroundClip = 'text';
-            
-            appDescription.innerText = "AI технологид тулгуурлан таны царайны харьцаа болон гоо үзэсгэлэнг 99.8% нарийвчлалтайгаар тодорхойлно.";
-            appDescription.style.color = 'var(--text-muted)';
-            
-            progressBar.style.width = '0%';
-            actionBtn.innerText = "Шинжилгээг эхлүүлэх 📸";
-            actionBtn.classList.remove('btn-pink');
-            
+
+            cardContent.style.display = 'flex';
+            formContainer.style.display = 'flex';
+            loaderContainer.style.display = 'none';
             disclaimerText.style.display = 'block';
-            
-            playSciFiBeep(350, 0.1, 'sine');
+            disclaimerText.style.opacity = '0.6';
+
+            progressBar.style.width = '0%';
+            statusText.innerText = "";
+
+            actionBtn.innerText = "Тодорхойлох 🔮";
+            actionBtn.style.opacity = '1';
+            actionBtn.disabled = false;
+            actionBtn.style.cursor = 'pointer';
+
+            playSoftNote(392.00, 0.1); // G4
         }
 
         // Particle generator
         function createSparkParticle(x, y) {
             const p = document.createElement('div');
             p.className = 'particle';
-            const particles = ['🐒', '🍌', '💥', '👀', '💢', '🖕'];
+            const particles = ['🐒', '💥', '👀', '🖕', '🍌'];
             p.innerText = particles[Math.floor(Math.random() * particles.length)];
             document.body.appendChild(p);
 
-            const destX = x + (Math.random() - 0.5) * 500;
-            const destY = y + (Math.random() - 0.5) * 500;
+            const destX = x + (Math.random() - 0.5) * 450;
+            const destY = y + (Math.random() - 0.5) * 450;
 
             p.animate([
-                { 
+                {
                     transform: 'translate(-50%, -50%) translate(0, 0) scale(0) rotate(0deg)',
                     opacity: 1,
                     left: x + 'px',
                     top: y + 'px'
                 },
-                { 
+                {
                     transform: `translate(-50%, -50%) translate(${destX - x}px, ${destY - y}px) scale(2) rotate(${Math.random() * 360}deg)`,
                     opacity: 0,
                     left: x + 'px',
                     top: y + 'px'
                 }
             ], {
-                duration: 800 + Math.random() * 600,
+                duration: 700 + Math.random() * 500,
                 easing: 'cubic-bezier(0.1, 0.8, 0.3, 1)'
             }).onfinish = () => p.remove();
         }
 
-        // Handle Main Button click based on current state
+        // Handle button clicks
         actionBtn.addEventListener('click', () => {
             if (appState === 'welcome') {
-                startScanning();
+                startCalculations();
             } else if (appState === 'completed') {
                 revealPrank();
             } else if (appState === 'revealed') {
@@ -726,4 +661,5 @@
         });
     </script>
 </body>
+
 </html>
