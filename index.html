@@ -3,22 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Soko-д зориулав</title>
+    <title>AI Face Beauty Evaluator 🧠✨</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* User provided colors */
-            --color1: #9ED3DC; /* Light Blue */
-            --color2: #FEFD99; /* Light Yellow */
-            --color3: #FCB7C7; /* Light Pink */
-            --color4: #CA6180; /* Deep Rose */
-            
-            --glass-bg: rgba(255, 255, 255, 0.45);
-            --glass-border: rgba(255, 255, 255, 0.7);
-            --text-main: #3d2b3d;
-            --text-accent: var(--color4);
+            --bg-color: #0b0813;
+            --card-bg: rgba(18, 14, 33, 0.7);
+            --border-glow: rgba(0, 242, 254, 0.25);
+            --neon-cyan: #00f2fe;
+            --neon-pink: #ff007f;
+            --neon-green: #39ff14;
+            --text-main: #f3f0ff;
+            --text-muted: #8b85a6;
         }
 
         * {
@@ -28,426 +26,704 @@
         }
 
         body {
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: #fdfafb;
             overflow-x: hidden;
-            overflow-y: auto;
             position: relative;
-            padding: 2rem 0;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255, 0, 127, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(0, 242, 254, 0.08) 0%, transparent 40%);
         }
 
-        /* Ambient Background with specified colors */
-        .ambient-bg {
+        /* Ambient floating light blobs */
+        .ambient-blob {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.6;
+            animation: drift 20s infinite alternate ease-in-out;
+        }
+
+        .blob-pink {
+            background: var(--neon-pink);
+            top: 20%;
+            left: 15%;
+            animation-delay: -5s;
+        }
+
+        .blob-cyan {
+            background: var(--neon-cyan);
+            bottom: 20%;
+            right: 15%;
+        }
+
+        @keyframes drift {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(60px, -40px) scale(1.2); }
+            100% { transform: translate(-40px, 60px) scale(0.9); }
+        }
+
+        /* Scanline Overlay Effect */
+        body::before {
+            content: " ";
+            display: block;
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
-            background: radial-gradient(circle at 0% 0%, var(--color1) 0%, transparent 50%),
-                        radial-gradient(circle at 100% 0%, var(--color2) 0%, transparent 50%),
-                        radial-gradient(circle at 100% 100%, var(--color3) 0%, transparent 50%),
-                        radial-gradient(circle at 0% 100%, var(--color4) 0%, transparent 50%);
-            filter: blur(80px);
-            opacity: 0.6;
-            animation: bgShift 20s ease-in-out infinite alternate;
-        }
-
-        @keyframes bgShift {
-            0% { transform: scale(1) rotate(0deg); }
-            100% { transform: scale(1.2) rotate(5deg); }
-        }
-
-        /* Decorative Floating Elements */
-        .float-blob {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(100px);
-            z-index: -1;
-            opacity: 0.5;
-            animation: float 25s infinite alternate ease-in-out;
-        }
-
-        @keyframes float {
-            0% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(100px, -50px) scale(1.2); }
-            100% { transform: translate(-50px, 100px) scale(0.8); }
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 999;
+            background-size: 100% 4px, 6px 100%;
+            pointer-events: none;
         }
 
         /* Main Container */
         .container {
-            position: relative;
-            z-index: 10;
             width: 90%;
-            max-width: 640px;
+            max-width: 480px;
+            z-index: 10;
+            perspective: 1000px;
         }
 
-        /* Glassmorphism Card Refined */
+        /* Glassmorphism Card */
         .card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(25px) saturate(180%);
-            -webkit-backdrop-filter: blur(25px) saturate(180%);
-            border: 1px solid var(--glass-border);
-            border-radius: 50px;
-            padding: 4rem 3rem;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid var(--border-glow);
+            border-radius: 28px;
+            padding: 2.5rem 2rem;
             box-shadow: 
-                0 20px 40px rgba(0, 0, 0, 0.05),
-                inset 0 0 20px rgba(255, 255, 255, 0.4);
+                0 20px 50px rgba(0, 0, 0, 0.5),
+                inset 0 0 20px rgba(0, 242, 254, 0.05);
             text-align: center;
+            transition: all 0.5s ease;
             position: relative;
             overflow: hidden;
         }
 
-        @keyframes softBreath {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.03); }
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -50%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(
+                to right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.03) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: skewX(-25deg);
+            transition: 0.75s;
+            pointer-events: none;
         }
 
-        .illustration-container {
-            display: flex;
-            gap: 16px;
-            justify-content: center;
-            align-items: flex-end;
+        .card:hover::after {
+            left: 125%;
+        }
+
+        /* Titles and Texts */
+        .header {
             margin-bottom: 2rem;
         }
 
-        .duo-img {
-            width: 140px;
-            height: 140px;
-            object-fit: cover;
-            object-position: top center;
-            border-radius: 30px;
-            border: 4px solid rgba(255,255,255,0.9);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.10);
-            animation: softBreath 4s ease-in-out infinite;
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--neon-cyan), var(--neon-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.5px;
         }
 
-        .duo-img:nth-child(2) {
-            animation-delay: -2s;
+        .header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.4;
         }
 
-        .duo-label {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--color4);
-            text-align: center;
-            margin-top: 6px;
-            letter-spacing: 0.05em;
-        }
-
-        .duo-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .icon-wrap {
-            width: 80px;
-            height: 80px;
-            background: white;
+        /* Scanner Display Area */
+        .scanner-frame {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 2rem;
             border-radius: 24px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(0, 242, 254, 0.2);
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 2.5rem;
-            box-shadow: 0 10px 25px rgba(202, 97, 128, 0.15);
-            font-size: 2.5rem;
-            animation: pulse 3s infinite;
+            overflow: hidden;
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.6);
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 10px 25px rgba(202, 97, 128, 0.15); }
-            50% { transform: scale(1.02); box-shadow: 0 15px 35px rgba(202, 97, 128, 0.25); }
-            100% { transform: scale(1); box-shadow: 0 10px 25px rgba(202, 97, 128, 0.15); }
-        }
-
-        /* Floating Cats */
-        .cat-layer {
-            position: fixed;
+        /* Scanning elements */
+        .scanner-frame::before {
+            content: '';
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
+            height: 4px;
+            background: linear-gradient(to right, transparent, var(--neon-cyan), transparent);
+            box-shadow: 0 0 12px var(--neon-cyan);
+            animation: scan 3s infinite ease-in-out;
+            z-index: 5;
+            display: none; /* Only when scanning */
         }
 
-        .floating-cat {
+        .scanning .scanner-frame::before {
+            display: block;
+        }
+
+        @keyframes scan {
+            0%, 100% { top: 0%; }
+            50% { top: 98%; }
+        }
+
+        /* Camera/Face Silhouette */
+        .silhouette {
+            width: 120px;
+            height: 120px;
+            opacity: 0.25;
+            transition: all 0.5s ease;
+            color: var(--neon-cyan);
+            filter: drop-shadow(0 0 8px rgba(0, 242, 254, 0.3));
+        }
+
+        .scanning .silhouette {
+            animation: pulse-silhouette 1.5s infinite alternate ease-in-out;
+            opacity: 0.65;
+            color: var(--neon-pink);
+            filter: drop-shadow(0 0 12px rgba(255, 0, 127, 0.5));
+        }
+
+        @keyframes pulse-silhouette {
+            from { transform: scale(0.95); opacity: 0.4; }
+            to { transform: scale(1.05); opacity: 0.8; }
+        }
+
+        /* Radar Circle Animation */
+        .radar-circle {
             position: absolute;
-            width: 80px;
-            height: 80px;
-            background-image: url('images/floating_kitten.png');
-            background-size: cover;
-            mix-blend-mode: multiply; /* Removes white background */
-            opacity: 0.4;
-            animation: floatCat 20s infinite linear;
+            width: 170px;
+            height: 170px;
+            border: 2px dashed rgba(0, 242, 254, 0.15);
+            border-radius: 50%;
+            animation: rotateRadar 20s infinite linear;
+            display: none;
         }
 
-        @keyframes floatCat {
-            0% { transform: translateY(110vh) rotate(0deg); }
-            100% { transform: translateY(-20vh) rotate(360deg); }
+        .scanning .radar-circle {
+            display: block;
+            border-color: rgba(255, 0, 127, 0.25);
         }
 
-        .message {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
-            line-height: 1.4;
-            color: var(--text-main);
-            margin-bottom: 2.5rem;
-            font-weight: 700;
+        @keyframes rotateRadar {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Result Image Styles */
+        .result-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+            display: none;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 4;
+        }
+
+        .revealed .result-image {
+            display: block;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .revealed .silhouette, .revealed .radar-circle {
+            display: none !important;
+        }
+
+        .revealed .scanner-frame {
+            border-color: var(--neon-pink);
+            box-shadow: 0 0 25px rgba(255, 0, 127, 0.4);
+            animation: popBorder 0.4s ease-out;
+        }
+
+        @keyframes popBorder {
+            0% { transform: scale(1); border-color: var(--neon-cyan); }
+            50% { transform: scale(1.08); border-color: #fff; }
+            100% { transform: scale(1); border-color: var(--neon-pink); }
+        }
+
+        /* Console/Logs Area */
+        .console-box {
+            font-family: 'Share Tech Mono', monospace;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: left;
+            font-size: 0.8rem;
+            height: 100px;
+            overflow-y: hidden;
+            margin-bottom: 2rem;
+            display: none;
+            color: var(--neon-green);
+            text-shadow: 0 0 4px rgba(57, 255, 20, 0.2);
+        }
+
+        .console-line {
+            margin-bottom: 0.4rem;
+            opacity: 0;
+            transform: translateY(5px);
+            animation: fadeInUp 0.3s forwards ease;
+        }
+
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+            display: none;
             position: relative;
         }
 
-        .message span {
-            color: var(--color4);
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink));
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+            border-radius: 4px;
+            transition: width 0.1s linear;
         }
 
-        .divider {
-            width: 40px;
-            height: 4px;
-            background: var(--color1);
-            margin: 0 auto 2.5rem;
-            border-radius: 2px;
-        }
-
+        /* Interactive Buttons */
         .btn {
-            background: var(--color4);
-            color: white;
-            border: none;
-            padding: 1.2rem 3rem;
-            font-size: 1.1rem;
+            background: transparent;
+            color: #fff;
+            border: 2px solid var(--neon-cyan);
+            padding: 1rem 2.2rem;
+            font-size: 1.05rem;
             font-weight: 600;
-            border-radius: 20px;
+            border-radius: 16px;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 10px 30px rgba(202, 97, 128, 0.3);
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            outline: none;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.15);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            transition: 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
         }
 
         .btn:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 15px 40px rgba(202, 97, 128, 0.4);
-            background: #b54c68;
+            background: var(--neon-cyan);
+            color: #0b0813;
+            box-shadow: 0 0 25px rgba(0, 242, 254, 0.45);
+            transform: translateY(-3px);
         }
 
         .btn:active {
             transform: translateY(0);
         }
 
-        /* Media Queries for better visibility */
-        @media (max-width: 600px) {
-            .card {
-                padding: 2.5rem 1.5rem;
-                border-radius: 30px;
-            }
-            .message {
-                font-size: 1.4rem;
-                margin-bottom: 1.5rem;
-            }
-            .main-illustration {
-                max-width: 180px;
-            }
-            .btn {
-                padding: 1rem 2rem;
-                font-size: 1rem;
-            }
+        .btn-pink {
+            border-color: var(--neon-pink);
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.15);
         }
 
-        /* Heart Sparks for Button Click */
-        .spark {
+        .btn-pink:hover {
+            background: var(--neon-pink);
+            color: #fff;
+            box-shadow: 0 0 25px rgba(255, 0, 127, 0.45);
+        }
+
+        /* Screen Shake Animation */
+        .shake-card {
+            animation: shake 0.6s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-2px, 0, 0); }
+            20%, 80% { transform: translate3d(4px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-8px, 0, 0); }
+            40%, 60% { transform: translate3d(8px, 0, 0); }
+        }
+
+        /* Face scanning mesh vector style */
+        .face-mesh {
+            width: 80px;
+            height: 80px;
+            stroke-width: 1.5;
+            stroke: currentColor;
+            fill: none;
+        }
+
+        /* Spark particles */
+        .particle {
             position: fixed;
             pointer-events: none;
             z-index: 1000;
             font-size: 1.5rem;
         }
 
-        /* Music Toggle Button */
-        .music-control {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 100;
-            width: 50px;
-            height: 50px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
-            font-size: 1.2rem;
-        }
-
-        .music-control:hover {
-            transform: scale(1.1);
-            background: white;
-            box-shadow: 0 15px 30px rgba(158, 211, 220, 0.3);
-        }
-
-        .music-control.playing {
-            animation: spin 3s linear infinite;
-            background: var(--color1);
-            color: white;
-        }
-
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        #youtube-player {
-            display: none;
+        /* Privacy Disclaimer */
+        .disclaimer {
+            margin-top: 1.5rem;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.2);
+            letter-spacing: 0.2px;
         }
     </style>
 </head>
 <body>
-    <div class="cat-layer" id="catLayer"></div>
+    <div class="ambient-blob blob-pink"></div>
+    <div class="ambient-blob blob-cyan"></div>
 
     <div class="container">
-        <div class="card">
-            <div class="illustration-container">
-                <div class="duo-item">
-                    <img src="images/sorry_cat.png" alt="Sorry Cat" class="duo-img">
-                    <div class="duo-label">Би 🐱</div>
-                </div>
-                <div class="duo-item">
-                    <img src="images/floating_kitten.png" alt="Kitten" class="duo-img" style="object-position: center; background: white;">
-                    <div class="duo-label">Soko-г харж 🤍</div>
-                </div>
+        <div class="card" id="prankCard">
+            <!-- Screen Header -->
+            <div class="header">
+                <h1 id="appTitle">Царай Шинжлэгч AI 🧠</h1>
+                <p id="appDescription">AI технологид тулгуурлан таны царайны харьцаа болон гоо үзэсгэлэнг 99.8% нарийвчлалтайгаар тодорхойлно.</p>
             </div>
-            <p class="message">
-                “Хэцүү үед нь гомдоосонд <span>уучлаарай</span> Soko, тэрийг мэдэлгүй хэлсэнд <span>уучлаарай</span>”
-            </p>
-            <div class="divider"></div>
-            <button class="btn" id="mainBtn">Уучиллаа</button>
+
+            <!-- Interactive Area / Scanner Frame -->
+            <div class="scanner-frame" id="scannerFrame">
+                <div class="radar-circle"></div>
+                <!-- SVG Face Silhouette for Tech feel -->
+                <svg class="silhouette" id="scannerSilhouette" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path class="face-mesh" d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 22 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 10.42 4.45 8.95 5.23 7.7L16.3 18.77C15.05 19.55 13.58 20 12 20ZM18.77 16.3L7.7 5.23C8.95 4.45 10.42 4 12 4C16.41 4 20 7.59 20 12C20 13.58 19.55 15.05 18.77 16.3Z" fill="currentColor"/>
+                    <path d="M12 6C9.79 6 8 7.79 8 10C8 12.21 9.79 14 12 14C14.21 14 16 12.21 16 10C16 7.79 14.21 6 12 6Z" fill="currentColor"/>
+                    <path d="M12 16C9.33 16 4 17.33 4 20V21H20V20C20 17.33 14.67 16 12 16Z" fill="currentColor"/>
+                </svg>
+                <!-- Prank Image -->
+                <img src="images/monkeymidlefinger.png" alt="Monkey Prank" class="result-image" id="prankImage">
+            </div>
+
+            <!-- Console Log Output (hidden until scan starts) -->
+            <div class="console-box" id="consoleBox"></div>
+
+            <!-- Progress Bar (hidden until scan starts) -->
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+
+            <!-- Main Button Action -->
+            <button class="btn" id="actionBtn">Шинжилгээг эхлүүлэх 📸</button>
+
+            <!-- Small Privacy Notice -->
+            <p class="disclaimer" id="disclaimerText">Бид таны камерны зураг болон хувийн мэдээллийг серверт хадгалахгүй.</p>
         </div>
     </div>
 
-    <div class="music-control" id="musicToggle" title="Дуу тоглуулах">
-        🎵
-    </div>
-
-    <div id="youtube-player"></div>
-
-    <script src="https://www.youtube.com/iframe_api"></script>
-
     <script>
-        const btn = document.getElementById('mainBtn');
-        const musicToggle = document.getElementById('musicToggle');
-        const catLayer = document.getElementById('catLayer');
-        let player;
-        let isPlaying = false;
+        const card = document.getElementById('prankCard');
+        const appTitle = document.getElementById('appTitle');
+        const appDescription = document.getElementById('appDescription');
+        const actionBtn = document.getElementById('actionBtn');
+        const scannerFrame = document.getElementById('scannerFrame');
+        const consoleBox = document.getElementById('consoleBox');
+        const progressContainer = document.getElementById('progressContainer');
+        const progressBar = document.getElementById('progressBar');
+        const disclaimerText = document.getElementById('disclaimerText');
+        const prankImage = document.getElementById('prankImage');
 
-        // Create floating cats
-        for (let i = 0; i < 12; i++) {
-            const cat = document.createElement('div');
-            cat.className = 'floating-cat';
-            cat.style.left = Math.random() * 100 + '%';
-            cat.style.animationDuration = (Math.random() * 15 + 15) + 's';
-            cat.style.animationDelay = (Math.random() * 20) + 's';
-            cat.style.width = (Math.random() * 60 + 40) + 'px';
-            cat.style.height = cat.style.width;
-            catLayer.appendChild(cat);
+        let appState = 'welcome'; // welcome, scanning, completed, revealed
+        let audioCtx = null;
+
+        // Custom Sound Generator using Web Audio API (No files needed)
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
         }
 
-        // YouTube API init
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('youtube-player', {
-                height: '0',
-                width: '0',
-                videoId: 'GYKIcyYXFZw', // Billie Eilish - i love you
-                playerVars: {
-                    'autoplay': 0,
-                    'controls': 0,
-                    'loop': 1,
-                    'playlist': 'GYKIcyYXFZw'
-                },
-                events: {
-                    'onReady': onPlayerReady
-                }
+        function playSciFiBeep(pitch, duration, type='sine') {
+            if (!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            
+            osc.type = type;
+            osc.frequency.setValueAtTime(pitch, audioCtx.currentTime);
+            
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+            
+            osc.start();
+            osc.stop(audioCtx.currentTime + duration);
+        }
+
+        function playRevealSound() {
+            if (!audioCtx) return;
+            
+            // Dramatic fail/prank retro synth sound effect
+            const now = audioCtx.currentTime;
+            
+            // Sound Part 1: Ascending tech noise
+            const osc1 = audioCtx.createOscillator();
+            const gain1 = audioCtx.createGain();
+            osc1.connect(gain1);
+            gain1.connect(audioCtx.destination);
+            osc1.type = 'sawtooth';
+            osc1.frequency.setValueAtTime(150, now);
+            osc1.frequency.exponentialRampToValueAtTime(1200, now + 0.5);
+            gain1.gain.setValueAtTime(0.2, now);
+            gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
+            osc1.start(now);
+            osc1.stop(now + 0.5);
+
+            // Sound Part 2: Comical drop / alarm
+            const osc2 = audioCtx.createOscillator();
+            const gain2 = audioCtx.createGain();
+            osc2.connect(gain2);
+            gain2.connect(audioCtx.destination);
+            osc2.type = 'square';
+            osc2.frequency.setValueAtTime(800, now + 0.45);
+            osc2.frequency.linearRampToValueAtTime(80, now + 1.2);
+            gain2.gain.setValueAtTime(0.25, now + 0.45);
+            gain2.gain.exponentialRampToValueAtTime(0.001, now + 1.25);
+            osc2.start(now + 0.45);
+            osc2.stop(now + 1.3);
+
+            // Sound Part 3: Low bass impact
+            const osc3 = audioCtx.createOscillator();
+            const gain3 = audioCtx.createGain();
+            osc3.connect(gain3);
+            gain3.connect(audioCtx.destination);
+            osc3.type = 'triangle';
+            osc3.frequency.setValueAtTime(120, now + 0.48);
+            osc3.frequency.linearRampToValueAtTime(50, now + 1.0);
+            gain3.gain.setValueAtTime(0.4, now + 0.48);
+            gain3.gain.exponentialRampToValueAtTime(0.001, now + 1.1);
+            osc3.start(now + 0.48);
+            osc3.stop(now + 1.1);
+        }
+
+        // Fake console log messages during scanning
+        const scanLogs = [
+            { time: 0, text: "❯ Төхөөрөмжийн биометр холболтыг шалгаж байна..." },
+            { time: 800, text: "❯ Камерын линзийг автоматаар тохирууллаа." },
+            { time: 1600, text: "❯ Хүрээлэн буй орчны гэрэлтүүлгийг оновчтой болгов." },
+            { time: 2400, text: "❯ Нүүрний 68 биометрик цэгүүдийг илрүүлж байна..." },
+            { time: 3200, text: "❯ Шинжилж байна: Арьсны бүтэц, хөгшрөлтийн индекс." },
+            { time: 4000, text: "❯ Тооцоолж байна: Симметри болон харьцааны дүн." },
+            { time: 4800, text: "❯ Гоо сайхны үнэлгээний алгоритм ажиллаж байна..." },
+            { time: 5400, text: "❯ АМЖИЛТТАЙ: Дүн шинжилгээ нэгтгэгдэж дууслаа." }
+        ];
+
+        function addLogLine(text) {
+            const line = document.createElement('div');
+            line.className = 'console-line';
+            line.innerText = text;
+            consoleBox.appendChild(line);
+            consoleBox.scrollTop = consoleBox.scrollHeight;
+            playSciFiBeep(600, 0.05, 'sine');
+        }
+
+        function startScanning() {
+            initAudio();
+            appState = 'scanning';
+            
+            // Switch layout state to scanning
+            card.classList.add('scanning');
+            consoleBox.style.display = 'block';
+            progressContainer.style.display = 'block';
+            disclaimerText.style.display = 'none';
+            
+            actionBtn.disabled = true;
+            actionBtn.innerText = "Шинжилж байна...";
+            actionBtn.style.opacity = '0.7';
+            actionBtn.style.cursor = 'not-allowed';
+
+            consoleBox.innerHTML = '';
+            
+            // Trigger fake logs
+            scanLogs.forEach(log => {
+                setTimeout(() => {
+                    if (appState === 'scanning') {
+                        addLogLine(log.text);
+                    }
+                }, log.time);
             });
+
+            // Animate progress bar
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                if (progress >= 100) {
+                    clearInterval(progressInterval);
+                    completeScanning();
+                } else {
+                    progress += 1;
+                    progressBar.style.width = progress + '%';
+                    if (progress % 12 === 0) {
+                        playSciFiBeep(450, 0.03, 'triangle');
+                    }
+                }
+            }, 60); // Total around 6 seconds
         }
 
-        function onPlayerReady(event) {
-            // Player is ready
-        }
-
-        function toggleMusic() {
-            if (!player) return;
+        function completeScanning() {
+            appState = 'completed';
+            actionBtn.disabled = false;
+            actionBtn.innerText = "Үр дүнг харах 📊";
+            actionBtn.style.opacity = '1';
+            actionBtn.style.cursor = 'pointer';
+            actionBtn.classList.add('btn-pink');
             
-            if (isPlaying) {
-                player.pauseVideo();
-                musicToggle.classList.remove('playing');
-                musicToggle.textContent = '🎵';
-            } else {
-                player.playVideo();
-                musicToggle.classList.add('playing');
-                musicToggle.textContent = '💿';
-            }
-            isPlaying = !isPlaying;
+            // Visual alert
+            playSciFiBeep(880, 0.25, 'sine');
+            setTimeout(() => playSciFiBeep(1100, 0.3, 'sine'), 120);
         }
 
-        musicToggle.addEventListener('click', toggleMusic);
-
-        btn.addEventListener('click', (e) => {
-            btn.textContent = 'Баярлалаа 🤍';
-            btn.style.background = '#9ED3DC';
-            btn.style.boxShadow = '0 10px 30px rgba(158, 211, 220, 0.4)';
+        function revealPrank() {
+            appState = 'revealed';
             
-            // Start music on click if not playing (user interaction requirement)
-            if (!isPlaying) {
-                toggleMusic();
-            }
+            // Sound effect
+            playRevealSound();
 
-            // Trigger explosion
-            const rect = btn.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
+            // Add shake class
+            card.classList.add('shake-card');
+            setTimeout(() => {
+                card.classList.remove('shake-card');
+            }, 600);
+
+            // Change page state to revealed
+            card.classList.remove('scanning');
+            card.classList.add('revealed');
+            
+            // Hide scanner tools
+            consoleBox.style.display = 'none';
+            progressContainer.style.display = 'none';
+
+            // Change titles and texts
+            appTitle.innerText = "ҮР ДҮН: 100% ШИМПАНЗЕ! 🐒🖕";
+            appTitle.style.background = 'linear-gradient(45deg, #ff007f, #ffaa00)';
+            appTitle.style.webkitBackgroundClip = 'text';
+            
+            appDescription.innerText = "Манай AI технологи таныг дэлхийн хамгийн ховор тохиох ойн сармагчинтай 99.9% ижил царайны бүтэцтэй болохыг тогтоолоо. Баяр хүргэе!";
+            appDescription.style.color = '#ff4b8b';
+
+            // Change button to Reset
+            actionBtn.innerText = "Дахин уншуулах 🔄";
+            actionBtn.classList.remove('btn-pink');
+            actionBtn.style.borderColor = 'var(--neon-cyan)';
+            actionBtn.style.boxShadow = '0 0 15px rgba(0, 242, 254, 0.15)';
+            
+            // Spark particle burst
+            const rect = actionBtn.getBoundingClientRect();
+            const centerX = window.innerWidth / 2;
             const centerY = rect.top + rect.height / 2;
-            
-            for(let i=0; i<20; i++) {
-                createSpark(centerX, centerY);
+            for (let i = 0; i < 30; i++) {
+                createSparkParticle(centerX, centerY);
             }
-        });
+        }
 
-        function createSpark(x, y) {
-            const spark = document.createElement('div');
-            spark.className = 'spark';
-            const items = ['🌸', '✨', '💖', '🤍'];
-            spark.textContent = items[Math.floor(Math.random() * items.length)];
-            document.body.appendChild(spark);
+        function resetApp() {
+            appState = 'welcome';
             
-            const destX = x + (Math.random() - 0.5) * 400;
-            const destY = y + (Math.random() - 0.5) * 400;
+            // Reset visual states
+            card.classList.remove('revealed');
+            card.classList.remove('scanning');
             
-            spark.animate([
+            appTitle.innerText = "Царай Шинжлэгч AI 🧠";
+            appTitle.style.background = 'linear-gradient(45deg, var(--neon-cyan), var(--neon-pink))';
+            appTitle.style.webkitBackgroundClip = 'text';
+            
+            appDescription.innerText = "AI технологид тулгуурлан таны царайны харьцаа болон гоо үзэсгэлэнг 99.8% нарийвчлалтайгаар тодорхойлно.";
+            appDescription.style.color = 'var(--text-muted)';
+            
+            progressBar.style.width = '0%';
+            actionBtn.innerText = "Шинжилгээг эхлүүлэх 📸";
+            actionBtn.classList.remove('btn-pink');
+            
+            disclaimerText.style.display = 'block';
+            
+            playSciFiBeep(350, 0.1, 'sine');
+        }
+
+        // Particle generator
+        function createSparkParticle(x, y) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            const particles = ['🐒', '🍌', '💥', '👀', '💢', '🖕'];
+            p.innerText = particles[Math.floor(Math.random() * particles.length)];
+            document.body.appendChild(p);
+
+            const destX = x + (Math.random() - 0.5) * 500;
+            const destY = y + (Math.random() - 0.5) * 500;
+
+            p.animate([
                 { 
-                    transform: 'translate(-50%, -50%) translate(0,0) scale(0)',
+                    transform: 'translate(-50%, -50%) translate(0, 0) scale(0) rotate(0deg)',
                     opacity: 1,
                     left: x + 'px',
                     top: y + 'px'
                 },
                 { 
-                    transform: `translate(-50%, -50%) translate(${destX - x}px, ${destY - y}px) scale(1.5)`,
+                    transform: `translate(-50%, -50%) translate(${destX - x}px, ${destY - y}px) scale(2) rotate(${Math.random() * 360}deg)`,
                     opacity: 0,
                     left: x + 'px',
                     top: y + 'px'
                 }
             ], {
-                duration: 1000 + Math.random() * 800,
-                easing: 'cubic-bezier(0.1, 0.8, 0.4, 1)'
-            }).onfinish = () => spark.remove();
+                duration: 800 + Math.random() * 600,
+                easing: 'cubic-bezier(0.1, 0.8, 0.3, 1)'
+            }).onfinish = () => p.remove();
         }
+
+        // Handle Main Button click based on current state
+        actionBtn.addEventListener('click', () => {
+            if (appState === 'welcome') {
+                startScanning();
+            } else if (appState === 'completed') {
+                revealPrank();
+            } else if (appState === 'revealed') {
+                resetApp();
+            }
+        });
     </script>
 </body>
 </html>
