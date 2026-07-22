@@ -5,17 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Сүнсний Хань Тодорхойлогч ✨</title>
-    
+
     <!-- Open Graph / Facebook Link Preview Metadata -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="Сүнсний Хань Тодорхойлогч ✨">
-    <meta property="og:description" content="Төрсөн он сар, нас, хүйсийн мэдээллээ оруулж одон орны болон энергийн зохицлоор сүнсний ханиа тодорхойлно уу.">
+    <meta property="og:description"
+        content="Төрсөн он сар, нас, хүйсийн мэдээллээ оруулж одон орны болон энергийн зохицлоор сүнсний ханиа тодорхойлно уу.">
     <meta property="og:image" content="images/preview.png">
 
     <!-- Twitter Link Preview Metadata -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:title" content="Сүнсний Хань Тодорхойлогч ✨">
-    <meta property="twitter:description" content="Төрсөн он сар, нас, хүйсийн мэдээллээ оруулж одон орны болон энергийн зохицлоор сүнсний ханиа тодорхойлно уу.">
+    <meta property="twitter:description"
+        content="Төрсөн он сар, нас, хүйсийн мэдээллээ оруулж одон орны болон энергийн зохицлоор сүнсний ханиа тодорхойлно уу.">
     <meta property="twitter:image" content="images/preview.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -276,26 +278,9 @@
             transform: translateY(0);
         }
 
-        /* Floating Try Again button style when prank is revealed */
+        /* Hide action button when the prank is revealed */
         .revealed .btn-wrapper {
-            position: absolute;
-            bottom: 2rem;
-            left: 2rem;
-            width: calc(100% - 4rem);
-        }
-
-        .revealed .btn {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(196, 154, 108, 0.4);
-            box-shadow: 0 10px 25px rgba(46, 44, 42, 0.12);
-            color: var(--text-main);
-        }
-
-        .revealed .btn:hover {
-            background: #FFFFFF;
-            color: var(--accent-hover);
+            display: none;
         }
 
         /* Screen Shake Animation */
@@ -603,7 +588,7 @@
             disclaimerText.style.display = 'none';
 
             // Change action button text to Reset
-            actionBtn.innerText = "Дахин оролдох 🔄";
+
         }
 
         function resetApp() {
